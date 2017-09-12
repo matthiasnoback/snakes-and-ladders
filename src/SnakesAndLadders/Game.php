@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace SnakesAndLadders;
 
+use Webmozart\Assert\Assert;
+
 final class Game
 {
     private $currentSquare = [];
@@ -24,8 +26,8 @@ final class Game
         return $this->currentSquare[spl_object_hash($token)];
     }
 
-    public function move(Token $token, int $numberOfSpaces): void
+    public function move(Token $token, Roll $roll): void
     {
-        $this->currentSquare[spl_object_hash($token)] += $numberOfSpaces;
+        $this->currentSquare[spl_object_hash($token)] += $roll->numberOfEyes();
     }
 }

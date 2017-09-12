@@ -4,6 +4,7 @@ namespace Acceptance;
 
 use Behat\Behat\Context\Context;
 use SnakesAndLadders\Game;
+use SnakesAndLadders\Roll;
 use SnakesAndLadders\Token;
 use Webmozart\Assert\Assert;
 
@@ -50,6 +51,6 @@ class FeatureContext implements Context
      */
     public function theTokenIsMovedSpaces($numberOfSpaces)
     {
-        $this->game->move($this->token, (int)$numberOfSpaces);
+        $this->game->move($this->token, Roll::fromInt($numberOfSpaces));
     }
 }
