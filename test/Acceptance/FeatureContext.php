@@ -5,6 +5,7 @@ namespace Acceptance;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use SnakesAndLadders\Game;
+use SnakesAndLadders\GameTestHelper;
 use SnakesAndLadders\Roll;
 use SnakesAndLadders\Token;
 use Webmozart\Assert\Assert;
@@ -128,5 +129,22 @@ class FeatureContext implements Context
     public function theResultShouldBeBetweenInclusive($min, $max)
     {
         Assert::range($this->roll->numberOfEyes(), $min, $max);
+    }
+
+    /**
+     * @Given there is a snake connecting squares :to and :from
+     */
+    public function thereIsASnakeConnectingSquaresAnd($to, $from)
+    {
+        $this->game->addSnake($from, $to);
+    }
+
+    /**
+     * @When the token lands on square :square
+     */
+    public function theTokenLandsOnSquare($square)
+    {
+        $helper = new GameTestHelper($this->game);
+        $helper->fastForwardToSquare($this->token, $square);
     }
 }

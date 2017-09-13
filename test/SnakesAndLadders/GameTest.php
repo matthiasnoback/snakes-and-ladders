@@ -66,4 +66,19 @@ final class GameTest extends TestCase
         $this->assertTrue($game->wasWonBy($token));
         $this->assertFalse($game->wasWonBy($someOtherToken));
     }
+
+    /**
+     * @test
+     */
+    public function when_the_token_lands_on_a_snake_the_token_moves_back_to_the_connected_square()
+    {
+        $game = Game::start();
+        $token = new Token();
+        $game->placeOnBoard($token);
+
+        $game->addSnake(4, 2);
+        $game->move($token, Roll::withNumberOfEyes(3));
+
+        $this->assertEquals(2, $game->currentSquareOfToken($token));
+    }
 }
