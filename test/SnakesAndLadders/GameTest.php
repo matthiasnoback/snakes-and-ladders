@@ -39,7 +39,7 @@ final class GameTest extends TestCase
         $token = new Token();
         $game->placeOnBoard($token);
 
-        $game->move($token, Roll::fromInt(3));
+        $game->move($token, Roll::withNumberOfEyes(3));
 
         $this->assertEquals(4, $game->currentSquareOfToken($token));
     }
@@ -58,10 +58,10 @@ final class GameTest extends TestCase
         // TODO deduplicate this logic
         for ($i = 1; $i <= 16; $i++) {
             // 16 * 6 = square 97
-            $game->move($token, Roll::fromInt(6));
+            $game->move($token, Roll::withNumberOfEyes(6));
         }
 
-        $game->move($token, Roll::fromInt(3));
+        $game->move($token, Roll::withNumberOfEyes(3));
 
         $this->assertTrue($game->wasWonBy($token));
         $this->assertFalse($game->wasWonBy($someOtherToken));

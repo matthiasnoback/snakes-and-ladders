@@ -19,9 +19,14 @@ final class Roll
         $this->numberOfEyes = $numberOfEyes;
     }
 
-    public static function fromInt(int $numberOfEyes): Roll
+    public static function withNumberOfEyes(int $numberOfEyes): Roll
     {
         return new self($numberOfEyes);
+    }
+
+    public static function roll(): Roll
+    {
+        return Roll::withNumberOfEyes(random_int(1, 6));
     }
 
     public function numberOfEyes(): int

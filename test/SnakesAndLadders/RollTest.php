@@ -18,7 +18,7 @@ final class RollTest extends TestCase
             $this->expectException(\InvalidArgumentException::class);
         }
 
-        $roll = Roll::fromInt($numberOfEyes);
+        $roll = Roll::withNumberOfEyes($numberOfEyes);
 
         $this->assertEquals($numberOfEyes, $roll->numberOfEyes());
     }
@@ -35,5 +35,17 @@ final class RollTest extends TestCase
             [6, true],
             [7, false]
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function you_can_roll_a_random_roll(): void
+    {
+        for ($i = 1; $i < 1000; $i++) {
+            Roll::roll();
+        }
+
+        $this->addToAssertionCount(1);
     }
 }

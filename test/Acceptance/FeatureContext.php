@@ -12,14 +12,19 @@ use Webmozart\Assert\Assert;
 class FeatureContext implements Context
 {
     /**
-     * @var Game
+     * @var Game|null
      */
     private $game;
 
     /**
-     * @var Token
+     * @var Token|null
      */
     private $token;
+
+    /**
+     * @var Roll|null
+     */
+    private $roll;
 
     /**
      * @Given the game is started
@@ -52,7 +57,7 @@ class FeatureContext implements Context
      */
     public function theTokenIsMovedSpaces($numberOfSpaces)
     {
-        $this->game->move($this->token, Roll::fromInt($numberOfSpaces));
+        $this->game->move($this->token, Roll::withNumberOfEyes($numberOfSpaces));
     }
 
     /**
@@ -62,7 +67,7 @@ class FeatureContext implements Context
     {
         for ($i = 1; $i <= 16; $i++) {
             // 16 * 6 = square 97
-            $this->game->move($this->token, Roll::fromInt(6));
+            $this->game->move($this->token, Roll::withNumberOfEyes(6));
         }
 
         Assert::same(97, $this->game->currentSquareOfToken($this->token));
@@ -82,5 +87,46 @@ class FeatureContext implements Context
     public function thePlayerHasNotWonTheGame()
     {
         Assert::false($this->game->wasWonBy($this->token));
+    }
+
+    /**
+     * @When the player rolls a die
+     */
+    public function thePlayerRollsADie()
+    {
+        $this->roll = Roll::roll();
+    }
+
+    /**
+     * @Given /^the player rolls a (\d+)$/
+     */
+    public function thePlayerRollsA($numberOfEyes)
+    {
+        $this->roll = Roll::withNumberOfEyes($numberOfEyes);
+    }
+
+    /**
+     * @When they move their token
+     */
+    public function theyMoveTheirToken()
+    {
+        $this->game->move($this->token, $this->roll);
+    }
+
+    /**
+     * @Then the token should move :expected spaces
+     */
+    public function theTokenShouldMoveSpaces($expected)
+    {
+        $movedSpaces = $this->game->currentSquareOfToken($this->token) - 1;
+        Assert::same((int)$expected, $movedSpaces);
+    }
+
+    /**
+     * @Then the result should be between :min-:max inclusive
+     */
+    public function theResultShouldBeBetweenInclusive($min, $max)
+    {
+        Assert::range($this->roll->numberOfEyes(), $min, $max);
     }
 }
