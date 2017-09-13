@@ -43,4 +43,27 @@ final class GameTest extends TestCase
 
         $this->assertEquals(4, $game->currentSquareOfToken($token));
     }
+
+    /**
+     * @test
+     */
+    public function the_game_is_won_when_the_token_reaches_square_100(): void
+    {
+        $game = Game::start();
+        $token = new Token();
+        $someOtherToken = new Token();
+        $game->placeOnBoard($token);
+        $game->placeOnBoard($someOtherToken);
+
+        // TODO deduplicate this logic
+        for ($i = 1; $i <= 16; $i++) {
+            // 16 * 6 = square 97
+            $game->move($token, Roll::fromInt(6));
+        }
+
+        $game->move($token, Roll::fromInt(3));
+
+        $this->assertTrue($game->wasWonBy($token));
+        $this->assertFalse($game->wasWonBy($someOtherToken));
+    }
 }

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace SnakesAndLadders;
 
-use Webmozart\Assert\Assert;
-
 final class Game
 {
+    const LAST_SQUARE = 100;
     private $currentSquare = [];
 
     private const FIRST_SQUARE = 1;
@@ -28,6 +27,15 @@ final class Game
 
     public function move(Token $token, Roll $roll): void
     {
+        if ($this->currentSquareOfToken($token) + $roll->numberOfEyes() > 100) {
+            return;
+        }
+
         $this->currentSquare[spl_object_hash($token)] += $roll->numberOfEyes();
+    }
+
+    public function wasWonBy(Token $token): bool
+    {
+        return $this->currentSquareOfToken($token) === self::LAST_SQUARE;
     }
 }
