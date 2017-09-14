@@ -48,4 +48,19 @@ final class RollTest extends TestCase
 
         $this->addToAssertionCount(1);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_determine_if_the_number_of_eyes_in_a_roll_is_higher_than_in_another_one(): void
+    {
+        $origin = Roll::withNumberOfEyes(3);
+        $higher = Roll::withNumberOfEyes(4);
+        $equal = Roll::withNumberOfEyes(3);
+        $lower = Roll::withNumberOfEyes(2);
+
+        $this->assertTrue($higher->isHigherThan($origin));
+        $this->assertFalse($lower->isHigherThan($higher));
+        $this->assertFalse($origin->isHigherThan($equal));
+    }
 }

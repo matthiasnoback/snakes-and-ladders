@@ -13,7 +13,7 @@ final class GameTestHelperTest extends TestCase
      */
     public function you_can_fast_forward_a_token_to_a_given_square(int $square): void
     {
-        $game = new Game();
+        $game = Game::start();
         $token = new Token();
         $game->placeOnBoard($token);
         $gameTestHelper = new GameTestHelper($game);

@@ -4,8 +4,11 @@ namespace Acceptance;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
+use SnakesAndLadders\DeterminePlayOrder;
 use SnakesAndLadders\Game;
 use SnakesAndLadders\GameTestHelper;
+use SnakesAndLadders\InputStub;
+use SnakesAndLadders\PlayOrder;
 use SnakesAndLadders\Roll;
 use SnakesAndLadders\Token;
 use Webmozart\Assert\Assert;
@@ -26,6 +29,16 @@ class FeatureContext implements Context
      * @var Roll|null
      */
     private $roll;
+
+    /**
+     * @var int
+     */
+    private $numberOfPlayers = 1;
+
+    /**
+     * @var PlayOrder|null
+     */
+    private $playOrder;
 
     /**
      * @Given the game is started
@@ -154,5 +167,64 @@ class FeatureContext implements Context
     public function thereIsALadderConnectingSquaresAnd($from, $to)
     {
         $this->game->addLadder((int)$from, (int)$to);
+    }
+
+    /**
+     * @Given :numberOfPlayers players are rolling to determine play order
+     */
+    public function playersAreRollingToDeterminePlayOrder($numberOfPlayers)
+    {
+        $this->numberOfPlayers = (int)$numberOfPlayers;
+    }
+
+    /**
+     * @When Player 1 rolls higher than Player 2
+     */
+    public function player1RollsHigherThanPlayer2()
+    {
+        $input = new InputStub([6, 4]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+    }
+
+    /**
+     * @When Player 2 rolls higher than Player 1
+     */
+    public function player2RollsHigherThanPlayer1()
+    {
+        $input = new InputStub([4, 6]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+    }
+
+    /**
+     * @Then Player 1 rolls first
+     */
+    public function player1RollsFirst()
+    {
+        Assert::eq(new PlayOrder([0, 1]), $this->playOrder);
+    }
+
+    /**
+     * @Then Player 2 rolls first
+     */
+    public function player2RollsFirst()
+    {
+        Assert::eq(new PlayOrder([1, 0]), $this->playOrder);
+    }
+
+    /**
+     * @When Player 1 rolls the same as Player 2
+     */
+    public function playerRollsTheSameAsPlayer()
+    {
+        $input = new InputStub([4, 4, 6, 5]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+    }
+
+    /**
+     * @Then the players must roll again
+     */
+    public function thePlayersMustRollAgain()
+    {
+        // nothing to verify here
     }
 }

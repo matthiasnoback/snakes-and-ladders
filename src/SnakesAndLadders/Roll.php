@@ -33,4 +33,9 @@ final class Roll
     {
         return $this->numberOfEyes;
     }
+
+    public function isHigherThan(Roll $compareWith): bool
+    {
+        return $this->numberOfEyes() > $compareWith->numberOfEyes();
+    }
 }
