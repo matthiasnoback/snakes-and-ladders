@@ -41,6 +41,11 @@ class FeatureContext implements Context
     private $playOrder;
 
     /**
+     * @var int|null
+     */
+    private $currentPlayer;
+
+    /**
      * @Given the game is started
      */
     public function theGameIsStarted()
@@ -226,5 +231,31 @@ class FeatureContext implements Context
     public function thePlayersMustRollAgain()
     {
         // nothing to verify here
+    }
+
+    /**
+     * @Given there are :number players
+     */
+    public function thereArePlayers($number)
+    {
+        $this->numberOfPlayers = $number;
+        $this->playOrder = (new DeterminePlayOrder(new InputStub([6, 4])))->determine($number);
+        $this->currentPlayer = $this->playOrder->firstPlayer();
+    }
+
+    /**
+     * @When Player :arg1 has moved their token
+     */
+    public function playerHasMovedTheirToken()
+    {
+        $this->currentPlayer = $this->playOrder->nextPlayer($this->currentPlayer);
+    }
+
+    /**
+     * @Then it is Player :expectedNextPlayer's turn
+     */
+    public function itIsPlayerSTurn($expectedNextPlayer)
+    {
+        Assert::eq($this->currentPlayer, (int)$expectedNextPlayer - 1);
     }
 }

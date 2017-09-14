@@ -32,6 +32,7 @@ final class DeterminePlayOrder
             return $this->input->rollDie($player);
         }, $remainingPlayers);
 
+        // TODO what follows might be better off in a first-class collection "Rolls"
         $eyes = array_map(function(Roll $roll) {
             return $roll->numberOfEyes();
         }, $rolls);

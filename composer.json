@@ -3,7 +3,8 @@
     "phpunit/phpunit": "6.3.0",
     "behat/behat": "v3.4.0",
     "phpstan/phpstan": "^0.8.5",
-    "phpmetrics/phpmetrics": "^2.2"
+    "phpmetrics/phpmetrics": "^2.2",
+    "symfony/var-dumper": "^3.3"
   },
   "autoload": {
     "psr-4": {
