@@ -77,8 +77,27 @@ final class GameTest extends TestCase
         $game->placeOnBoard($token);
 
         $game->addSnake(4, 2);
+
+        // the token moves to square 4
         $game->move($token, Roll::withNumberOfEyes(3));
 
         $this->assertEquals(2, $game->currentSquareOfToken($token));
+    }
+
+    /**
+     * @test
+     */
+    public function when_the_token_lands_on_a_ladder_the_token_moves_forward_to_the_connected_square()
+    {
+        $game = Game::start();
+        $token = new Token();
+        $game->placeOnBoard($token);
+
+        $game->addLadder(2, 12);
+
+        // the token moves to square 2
+        $game->move($token, Roll::withNumberOfEyes(1));
+
+        $this->assertEquals(12, $game->currentSquareOfToken($token));
     }
 }

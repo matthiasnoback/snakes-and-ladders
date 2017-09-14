@@ -5,6 +5,8 @@ namespace SnakesAndLadders;
 
 final class Game
 {
+    // TODO tease out the concept of a "Board"
+
     const LAST_SQUARE = 100;
 
     private $currentSquare = [];
@@ -12,6 +14,7 @@ final class Game
     private const FIRST_SQUARE = 1;
 
     private $snakes = [];
+    private $ladders = [];
 
     public static function start(): Game
     {
@@ -45,6 +48,10 @@ final class Game
         if (isset($this->snakes[$this->currentSquareOfToken($token)])) {
             $this->setNewSquare($token, $this->snakes[$this->currentSquareOfToken($token)]);
         }
+
+        if (isset($this->ladders[$this->currentSquareOfToken($token)])) {
+            $this->setNewSquare($token, $this->ladders[$this->currentSquareOfToken($token)]);
+        }
     }
 
     public function wasWonBy(Token $token): bool
@@ -55,11 +62,21 @@ final class Game
     public function addSnake(int $from, int $to): void
     {
         // TODO move snake initialization to constructor
+        // TODO prevent snakes going forward
+        // TODO prevent overwriting existing snakes or ladders
         $this->snakes[$from] = $to;
     }
 
     private function setNewSquare(Token $token, int $square): void
     {
         $this->currentSquare[spl_object_hash($token)] = $square;
+    }
+
+    public function addLadder(int $from, int $to): void
+    {
+        // TODO move ladders initialization to constructor
+        // TODO prevent ladders going backward
+        // TODO prevent overwriting existing snakes or ladders
+        $this->ladders[$from] = $to;
     }
 }

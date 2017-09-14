@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 class FeatureContext implements Context
 {
     /**
-     * @var Game|null
+     * @var Game
      */
     private $game;
 
@@ -146,5 +146,13 @@ class FeatureContext implements Context
     {
         $helper = new GameTestHelper($this->game);
         $helper->fastForwardToSquare($this->token, $square);
+    }
+
+    /**
+     * @Given there is a ladder connecting squares :from and :to
+     */
+    public function thereIsALadderConnectingSquaresAnd($from, $to)
+    {
+        $this->game->addLadder((int)$from, (int)$to);
     }
 }
