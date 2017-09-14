@@ -187,8 +187,9 @@ class FeatureContext implements Context
      */
     public function player1RollsHigherThanPlayer2()
     {
-        $input = new InputStub([6, 4]);
-        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+        $numberOfPlayers = 2;
+        $input = new InputStub($numberOfPlayers, [6, 4]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine();
     }
 
     /**
@@ -196,8 +197,9 @@ class FeatureContext implements Context
      */
     public function player2RollsHigherThanPlayer1()
     {
-        $input = new InputStub([4, 6]);
-        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+        $numberOfPlayers = 2;
+        $input = new InputStub($numberOfPlayers, [4, 6]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine();
     }
 
     /**
@@ -221,8 +223,9 @@ class FeatureContext implements Context
      */
     public function playerRollsTheSameAsPlayer()
     {
-        $input = new InputStub([4, 4, 6, 5]);
-        $this->playOrder = (new DeterminePlayOrder($input))->determine(2);
+        $numberOfPlayers = 2;
+        $input = new InputStub($numberOfPlayers, [4, 4, 6, 5]);
+        $this->playOrder = (new DeterminePlayOrder($input))->determine();
     }
 
     /**
@@ -239,7 +242,7 @@ class FeatureContext implements Context
     public function thereArePlayers($number)
     {
         $this->numberOfPlayers = $number;
-        $this->playOrder = (new DeterminePlayOrder(new InputStub([6, 4])))->determine($number);
+        $this->playOrder = (new DeterminePlayOrder(new InputStub($number, [6, 4])))->determine();
         $this->currentPlayer = $this->playOrder->firstPlayer();
     }
 

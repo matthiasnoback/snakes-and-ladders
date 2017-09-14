@@ -9,4 +9,9 @@ final class RandomInput implements Input
     {
         return Roll::roll();
     }
+
+    public function numberOfPlayers(): int
+    {
+        return random_int(1, 4);
+    }
 }

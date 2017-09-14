@@ -15,9 +15,14 @@ final class DeterminePlayOrder
         $this->input = $input;
     }
 
-    public function determine(int $numberOfPlayers): PlayOrder
+    public function determine(): PlayOrder
     {
+        $numberOfPlayers = $this->input->numberOfPlayers();
+
         $allPlayers = range(0, $numberOfPlayers - 1);
+        $allPlayers = array_map(function(int $playerIndex) {
+            return new Player($playerIndex);
+        }, $allPlayers);
 
         return new PlayOrder($this->determineInLoop($allPlayers, []));
     }
@@ -25,11 +30,11 @@ final class DeterminePlayOrder
     private function determineInLoop(array $remainingPlayers, array $determinedSoFar): array
     {
         if (count($remainingPlayers) === 1) {
-            return array_merge($determinedSoFar, $remainingPlayers);
+            return array_merge($determinedSoFar, array_map(function(Player $player) { return $player->index(); }, $remainingPlayers));
         }
 
-        $rolls = array_map(function(int $player) {
-            return $this->input->rollDie($player);
+        $rolls = array_map(function(Player $player) {
+            return $this->input->rollDie($player->index());
         }, $remainingPlayers);
 
         // TODO what follows might be better off in a first-class collection "Rolls"
@@ -49,8 +54,8 @@ final class DeterminePlayOrder
         reset($eyes);
         $highestRollingPlayer = key($eyes);
 
-        $remainingPlayers = array_filter($remainingPlayers, function(int $player) use ($highestRollingPlayer) {
-            return $player !== $highestRollingPlayer;
+        $remainingPlayers = array_filter($remainingPlayers, function(Player $player) use ($highestRollingPlayer) {
+            return $player->index() !== $highestRollingPlayer;
         });
 
         return $this->determineInLoop($remainingPlayers, array_merge($determinedSoFar, [$highestRollingPlayer]));
