@@ -26,7 +26,7 @@ final class Roll
 
     public static function roll(): Roll
     {
-        return Roll::withNumberOfEyes(random_int(1, 6));
+        return self::withNumberOfEyes(random_int(1, 6));
     }
 
     public function numberOfEyes(): int

@@ -5,7 +5,7 @@ namespace SnakesAndLadders;
 
 use PHPUnit\Framework\TestCase;
 
-final class NullInputTest extends TestCase
+final class RandomInputTest extends TestCase
 {
     /**
      * @test

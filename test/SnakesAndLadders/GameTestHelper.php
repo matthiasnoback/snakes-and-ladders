@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace SnakesAndLadders;
 
-use Webmozart\Assert\Assert;
-
 final class GameTestHelper
 {
     /**
@@ -19,6 +17,8 @@ final class GameTestHelper
 
     public function fastForwardToSquare(Token $token, int $square): void
     {
+        // TODO verify input values
+
         $this->game->placeOnBoard($token);
 
         $stepsToTake = $square - 1;

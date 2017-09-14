@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace SnakesAndLadders;
 
-use Behat\Behat\Tester\Exception\PendingException;
-
 final class Game
 {
     // TODO tease out the concept of a "Board"
@@ -18,18 +16,9 @@ final class Game
     private $snakes = [];
     private $ladders = [];
 
-    private function __construct(int $numberOfPlayers)
+    public static function start(): Game
     {
-    }
-
-    public static function start(int $numberOfPlayers = 1, Input $input = null): Game
-    {
-        if ($input === null) {
-            $input = new RandomInput();
-        }
-
-        // TODO get rid of default value
-        return new self($numberOfPlayers);
+        return new self();
     }
 
     public function placeOnBoard(Token $token): void
